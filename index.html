@@ -64,6 +64,8 @@ opacity:0;
 }
 /* Glass Card */
 .container{
+display:none;
+text-align:center;
 background:rgba(255,255,255,.12);
 backdrop-filter:blur(12px);
 padding:40px;
@@ -90,12 +92,29 @@ to{width:100%}
 @keyframes blink{
 50%{border-color:transparent}
 }  
+#giftBox{
+position:fixed;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+font-size:120px;
+cursor:pointer;
+z-index:9999;
+animation:bounce 1s infinite;
+}
+
+@keyframes bounce{
+0%,100%{transform:translate(-50%,-50%) scale(1);}
+50%{transform:translate(-50%,-50%) scale(1.15);}
+}
 </style>
 
 </head>
 
 <body>
-
+<div id="giftBox" onclick="openGift()">
+🎁
+</div>
 <div class="container">
 
 <h1>
@@ -104,12 +123,22 @@ to{width:100%}
 <span class="jabu">Jabu</span>
 </h1>
 
-<p>May all your dreams come true ❤️</p>
+<p class="typing">
+May Allah bless you with happiness, success and endless smiles ❤️
+</p>
 
 <button id="btn" onclick="celebrate()">
 🎁 Open Surprise
 </button>
+<br><br>
 
+<button onclick="playMusic()">
+🎵 Play Music
+</button>
+
+<audio id="music" loop>
+    <source src="birthday.mp3" type="audio/mpeg">
+</audio>
 </div>
 
 <script>
@@ -227,6 +256,9 @@ alert("🎂 Happy Birthday Jabu ❤️\n\nMay your life be filled with happiness
 },300);
 
 }
+function playMusic() {
+    document.getElementById("music").play();
+}  
 
 </script>
 </body>
