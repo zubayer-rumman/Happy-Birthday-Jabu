@@ -148,5 +148,70 @@ Open Surprise 🎁
 
 </div>
 
-</body>
+<script>
+
+// ❤️ Hearts
+for(let i=0;i<35;i++){
+
+let h=document.createElement("div");
+
+h.className="heart";
+
+h.innerHTML="❤️";
+
+h.style.left=Math.random()*100+"vw";
+
+h.style.fontSize=(18+Math.random()*22)+"px";
+
+h.style.animationDuration=(5+Math.random()*4)+"s";
+
+h.style.animationDelay=Math.random()*5+"s";
+
+document.body.appendChild(h);
+
+}
+
+// 🎈 Balloons
+for(let i=0;i<15;i++){
+
+let b=document.createElement("div");
+
+b.className="balloon";
+
+b.innerHTML="🎈";
+
+b.style.left=Math.random()*100+"vw";
+
+b.style.fontSize=(35+Math.random()*20)+"px";
+
+b.style.animationDuration=(8+Math.random()*5)+"s";
+
+b.style.animationDelay=Math.random()*6+"s";
+
+document.body.appendChild(b);
+
+}
+
+// ✨ Stars
+for(let i=0;i<60;i++){
+
+let s=document.createElement("div");
+
+s.className="star";
+
+s.innerHTML="✨";
+
+s.style.left=Math.random()*100+"vw";
+
+s.style.top=Math.random()*100+"vh";
+
+s.style.fontSize=(8+Math.random()*10)+"px";
+
+s.style.animationDelay=Math.random()*2+"s";
+
+document.body.appendChild(s);
+
+}
+
+</script></body>
 </html>
