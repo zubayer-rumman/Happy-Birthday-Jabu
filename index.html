@@ -75,7 +75,57 @@ transform:scale(1.1);
 from{transform:scale(1);}
 to{transform:scale(1.08);}
 }
+/* Floating Hearts */
+.heart{
+position:absolute;
+bottom:-50px;
+font-size:25px;
+animation:heartUp linear infinite;
+}
 
+@keyframes heartUp{
+0%{
+transform:translateY(0);
+opacity:0;
+}
+20%{
+opacity:1;
+}
+100%{
+transform:translateY(-120vh) rotate(360deg);
+opacity:0;
+}
+}
+
+/* Floating Balloons */
+.balloon{
+position:absolute;
+bottom:-100px;
+font-size:45px;
+animation:balloonUp linear infinite;
+}
+
+@keyframes balloonUp{
+100%{
+transform:translateY(-120vh);
+}
+}
+
+/* Sparkles */
+.star{
+position:absolute;
+color:white;
+animation:blink 1.5s infinite;
+}
+
+@keyframes blink{
+0%,100%{
+opacity:.2;
+}
+50%{
+opacity:1;
+}
+}
 </style>
 
 </head>
@@ -97,6 +147,71 @@ Open Surprise 🎁
 </button>
 
 </div>
+<script>
 
+// ❤️ Hearts
+for(let i=0;i<35;i++){
+
+let h=document.createElement("div");
+
+h.className="heart";
+
+h.innerHTML="❤️";
+
+h.style.left=Math.random()*100+"vw";
+
+h.style.fontSize=(18+Math.random()*22)+"px";
+
+h.style.animationDuration=(5+Math.random()*4)+"s";
+
+h.style.animationDelay=Math.random()*5+"s";
+
+document.body.appendChild(h);
+
+}
+
+// 🎈 Balloons
+for(let i=0;i<15;i++){
+
+let b=document.createElement("div");
+
+b.className="balloon";
+
+b.innerHTML="🎈";
+
+b.style.left=Math.random()*100+"vw";
+
+b.style.fontSize=(35+Math.random()*20)+"px";
+
+b.style.animationDuration=(8+Math.random()*5)+"s";
+
+b.style.animationDelay=Math.random()*6+"s";
+
+document.body.appendChild(b);
+
+}
+
+// ✨ Stars
+for(let i=0;i<60;i++){
+
+let s=document.createElement("div");
+
+s.className="star";
+
+s.innerHTML="✨";
+
+s.style.left=Math.random()*100+"vw";
+
+s.style.top=Math.random()*100+"vh";
+
+s.style.fontSize=(8+Math.random()*10)+"px";
+
+s.style.animationDelay=Math.random()*2+"s";
+
+document.body.appendChild(s);
+
+}
+
+</script>
 </body>
 </html>
