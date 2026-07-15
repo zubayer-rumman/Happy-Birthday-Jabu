@@ -6,6 +6,7 @@
 <title>Happy Birthday Jabu 🎂</title>
 
 <style>
+
 *{
 margin:0;
 padding:0;
@@ -18,9 +19,9 @@ overflow:hidden;
 display:flex;
 justify-content:center;
 align-items:center;
-background:linear-gradient(-45deg,#ff4b8b,#6c63ff,#00c9ff,#ffcc70);
+background:linear-gradient(-45deg,#ff4b8b,#7c5cff,#00c9ff,#ffd86f);
 background-size:400% 400%;
-animation:bg 12s ease infinite;
+animation:bg 10s ease infinite;
 font-family:Arial,sans-serif;
 }
 
@@ -36,10 +37,10 @@ z-index:10;
 }
 
 h1{
-font-size:60px;
+font-size:65px;
 color:white;
 text-shadow:0 0 20px white;
-animation:glow 2s infinite alternate;
+animation:zoom 2s infinite alternate;
 }
 
 .jabu{
@@ -49,7 +50,7 @@ text-shadow:0 0 20px red;
 
 p{
 margin-top:20px;
-font-size:22px;
+font-size:24px;
 color:white;
 }
 
@@ -59,9 +60,9 @@ padding:15px 40px;
 font-size:22px;
 border:none;
 border-radius:50px;
-cursor:pointer;
 background:#ff0055;
 color:white;
+cursor:pointer;
 box-shadow:0 0 20px #ff0055;
 transition:.3s;
 }
@@ -70,10 +71,11 @@ button:hover{
 transform:scale(1.1);
 }
 
-@keyframes glow{
+@keyframes zoom{
 from{transform:scale(1);}
 to{transform:scale(1.08);}
 }
+
 </style>
 
 </head>
@@ -88,10 +90,10 @@ to{transform:scale(1.08);}
 <span class="jabu">Jabu</span>
 </h1>
 
-<p>Wishing you endless happiness, love & success ❤️</p>
+<p>May all your dreams come true ❤️</p>
 
-<button onclick="alert('🎉 Surprise is coming in Step 2 🎉')">
-Click Here ❤️
+<button id="btn">
+Open Surprise 🎁
 </button>
 
 </div>
