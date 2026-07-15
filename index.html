@@ -290,7 +290,111 @@ clip-path:inset(0 0 0 0);
 }
 }
 
-/* Scale everything down on phones so it matches how it looks on a laptop, instead of looking zoomed in */
+/* Love Letter Modal */
+#letterModal{
+display:none;
+position:fixed;
+inset:0;
+z-index:2000;
+align-items:center;
+justify-content:center;
+padding:20px;
+background:rgba(10,5,20,.55);
+backdrop-filter:blur(6px);
+-webkit-backdrop-filter:blur(6px);
+}
+
+#letterModal.open{
+display:flex;
+animation:overlayFade .4s ease forwards;
+}
+
+@keyframes overlayFade{
+from{opacity:0;}
+to{opacity:1;}
+}
+
+.letter-card{
+position:relative;
+width:100%;
+max-width:520px;
+max-height:85vh;
+overflow-y:auto;
+background:linear-gradient(160deg,#fff8ec,#fbeecb);
+color:#3a2a1a;
+padding:45px 35px 35px;
+border-radius:18px;
+box-shadow:
+0 0 0 1px rgba(255,215,0,.4),
+0 25px 60px rgba(0,0,0,.5),
+0 0 60px rgba(255,215,0,.25);
+transform-origin:top center;
+animation:letterOpen .6s cubic-bezier(.2,.8,.2,1) forwards;
+text-align:left;
+}
+
+@keyframes letterOpen{
+0%{transform:scaleY(.05) scale(.9);opacity:0;}
+60%{transform:scaleY(1.03) scale(1);opacity:1;}
+100%{transform:scaleY(1) scale(1);opacity:1;}
+}
+
+.letter-seal{
+position:absolute;
+top:-26px;
+left:50%;
+transform:translateX(-50%);
+font-size:44px;
+filter:drop-shadow(0 0 12px rgba(255,215,0,.8));
+}
+
+.letter-title{
+font-family:'Segoe UI',Arial,sans-serif;
+font-size:24px;
+font-weight:700;
+color:#b8005a;
+text-align:center;
+margin-bottom:18px;
+}
+
+.letter-body{
+font-size:15.5px;
+line-height:1.9;
+}
+
+.letter-body p{
+color:#3a2a1a;
+font-size:15.5px;
+margin:0 0 14px;
+text-align:left;
+}
+
+.letter-signature{
+text-align:right;
+font-weight:700;
+color:#b8005a;
+margin-top:8px;
+}
+
+.letter-close{
+display:block;
+margin:22px auto 0;
+padding:10px 30px;
+border:none;
+border-radius:30px;
+background:#b8005a;
+color:#fff;
+font-size:15px;
+cursor:pointer;
+box-shadow:0 4px 16px rgba(184,0,90,.4);
+transition:.2s;
+}
+
+.letter-close:hover{
+transform:scale(1.06);
+}
+
+
 @media (max-width:600px){
 
 h1{
@@ -327,6 +431,23 @@ font-size:70px;
 
 #giftLabel{
 font-size:14px;
+}
+
+.letter-card{
+padding:38px 22px 26px;
+max-height:80vh;
+}
+
+.letter-title{
+font-size:19px;
+}
+
+.letter-body p{
+font-size:13.5px;
+}
+
+.letter-signature{
+font-size:13.5px;
 }
 
 }
@@ -449,6 +570,20 @@ document.body.appendChild(s);
 }
 
 </script>
+<div id="letterModal">
+<div class="letter-card">
+<div class="letter-seal">💌</div>
+<div class="letter-title">Happy Birthday, Mi Amor. ❤️</div>
+<div class="letter-body">
+<p>Tumi amar life-er one of the best parts. Thank you for giving me so much love, happiness, and beautiful memories.</p>
+<p>Ami shudhu chai Allah tomake shobshomoy happy, healthy, ar successful rakhuk. Ami jani na Allah amader vagge ki likhe rekhechen, but deep inside I still believe we belong together.</p>
+<p>No matter what happens, you'll always have a special place in my heart.</p>
+<p class="letter-signature">Love you. Always. ❤️</p>
+</div>
+<button class="letter-close" onclick="closeLetter()">Close</button>
+</div>
+</div>
+
 <script>
 
 function openGift(){
@@ -499,9 +634,13 @@ setTimeout(()=>f.remove(),1000);
 }
 
 setTimeout(()=>{
-alert("🎂 Happy Birthday Jabu ❤️\n\nMay your life be filled with happiness, love and success! 🎉");
+document.getElementById("letterModal").classList.add("open");
 },300);
 
+}
+
+function closeLetter(){
+document.getElementById("letterModal").classList.remove("open");
 }
 
 </script>  
