@@ -1,3 +1,10 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Happy Birthday Jabu</title>
+
+<style>
 .balloon{
     position:absolute;
     bottom:-100px;
@@ -74,6 +81,7 @@ backdrop-filter:blur(12px);
 padding:40px;
 border-radius:25px;
 box-shadow:0 0 30px rgba(255,255,255,.3);
+    color:white;
 }
 
 @keyframes fadeIn{
@@ -163,7 +171,19 @@ May Allah bless you with happiness, success and endless smiles ❤️
 for(let i=0;i<35;i++){
 
 let h=document.createElement("div");
+.heart{
+    position:absolute;
+    bottom:-50px;
+    animation:heartUp 8s linear infinite;
+    pointer-events:none;
+}
 
+@keyframes heartUp{
+    100%{
+        transform:translateY(-120vh);
+        opacity:0;
+    }
+}
 h.className="heart";
 
 h.innerHTML="❤️";
