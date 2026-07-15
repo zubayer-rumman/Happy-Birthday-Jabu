@@ -11,10 +11,10 @@ transform:translateY(-120vh);
 .star{
 position:absolute;
 color:white;
-animation:blink 1.5s infinite;
+animation:starBlink 1.5s infinite;
 }
 
-@keyframes blink{
+@keyframes starBlink{
 0%,100%{
 opacity:.2;
 }
@@ -73,24 +73,37 @@ border-radius:25px;
 box-shadow:0 0 30px rgba(255,255,255,.3);
 }
 
+@keyframes fadeIn{
+from{
+opacity:0;
+transform:scale(.8);
+}
+to{
+opacity:1;
+transform:scale(1);
+}
+}
 /* Typing Effect */
+
+
+@keyframes typing{
+from{width:0}
+to{width:100%}
+}
 .typing{
+display:inline-block;
 overflow:hidden;
 white-space:nowrap;
 border-right:3px solid white;
 width:0;
 margin:auto;
 animation:typing 5s steps(40,end) forwards,
-blink .8s infinite;
+cursorBlink .8s infinite;
 }
-
-@keyframes typing{
-from{width:0}
-to{width:100%}
+@keyframes cursorBlink{
+50%{
+border-color:transparent;
 }
-
-@keyframes blink{
-50%{border-color:transparent}
 }  
 #giftBox{
 position:fixed;
@@ -209,8 +222,14 @@ document.body.appendChild(s);
 </script>
 <script>
 
-function celebrate(){
+function celebrate()
+{
+function openGift(){
+    document.getElementById("giftBox").style.display = "none";
+    document.querySelector(".container").style.display = "block";
 
+    document.getElementById("music").play().catch(()=>{});
+}
 // Confetti
 for(let i=0;i<180;i++){
 
