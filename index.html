@@ -222,62 +222,64 @@ document.body.appendChild(s);
 </script>
 <script>
 
-function celebrate()
-{
 function openGift(){
     document.getElementById("giftBox").style.display = "none";
-    document.querySelector(".container").style.display = "block";
+    
+    const container = document.querySelector(".container");
+    container.style.display = "block";
+    container.style.animation = "fadeIn 1s ease";
 
     document.getElementById("music").play().catch(()=>{});
 }
-// Confetti
-for(let i=0;i<180;i++){
 
-let c=document.createElement("div");
+function celebrate(){
 
-c.className="confetti";
+    // Confetti
+    for(let i=0;i<180;i++){
 
-const icons=["🎉","🎊","✨","❤️","🎈","🎂"];
+        let c=document.createElement("div");
 
-c.innerHTML=icons[Math.floor(Math.random()*icons.length)];
+        c.className="confetti";
 
-c.style.left=Math.random()*100+"vw";
+        const icons=["🎉","🎊","✨","❤️","🎈","🎂"];
 
-c.style.animationDuration=(2+Math.random()*3)+"s";
+        c.innerHTML=icons[Math.floor(Math.random()*icons.length)];
 
-document.body.appendChild(c);
+        c.style.left=Math.random()*100+"vw";
 
-setTimeout(()=>c.remove(),5000);
+        c.style.animationDuration=(2+Math.random()*3)+"s";
 
+        document.body.appendChild(c);
+
+        setTimeout(()=>c.remove(),5000);
+    }
+
+    // Fireworks
+    for(let i=0;i<35;i++){
+
+        let f=document.createElement("div");
+
+        f.className="firework";
+
+        f.innerHTML="✨";
+
+        f.style.left=Math.random()*100+"vw";
+
+        f.style.top=Math.random()*100+"vh";
+
+        document.body.appendChild(f);
+
+        setTimeout(()=>f.remove(),1000);
+    }
+
+    setTimeout(()=>{
+        alert("🎂 Happy Birthday Jabu ❤️\n\nMay your life be filled with happiness, love and success! 🎉");
+    },300);
 }
 
-// Fireworks
-for(let i=0;i<35;i++){
-
-let f=document.createElement("div");
-
-f.className="firework";
-
-f.innerHTML="✨";
-
-f.style.left=Math.random()*100+"vw";
-
-f.style.top=Math.random()*100+"vh";
-
-document.body.appendChild(f);
-
-setTimeout(()=>f.remove(),1000);
-
-}
-
-setTimeout(()=>{
-alert("🎂 Happy Birthday Jabu ❤️\n\nMay your life be filled with happiness, love and success! 🎉");
-},300);
-
-}
 function playMusic() {
     document.getElementById("music").play();
-}  
+} 
 
 </script>
 </body>
