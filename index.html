@@ -42,8 +42,8 @@ animation:zoom 2s infinite alternate;
 }
 
 .jabu{
-color:#ff0000;
-text-shadow:0 0 20px red;
+color:#ffd700;
+text-shadow:0 0 20px #ffd700,0 0 40px rgba(255,215,0,.6);
 }
 
 p{
@@ -187,6 +187,7 @@ transform:translateY(0);
 
 /* Glass Card */
 .container{
+display:none;
 background:rgba(255,255,255,0.10);
 backdrop-filter:blur(15px);
 -webkit-backdrop-filter:blur(15px);
@@ -205,6 +206,70 @@ box-shadow:
 
 text-align:center;
 z-index:10;
+}
+
+.container.show{
+display:block;
+animation:cardIn .8s ease forwards;
+}
+
+@keyframes cardIn{
+from{opacity:0;transform:scale(.85);}
+to{opacity:1;transform:scale(1);}
+}
+
+/* Premium Gift Box */
+#giftBoxWrap{
+position:fixed;
+inset:0;
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+gap:18px;
+z-index:20;
+cursor:pointer;
+}
+
+#giftBoxWrap.hide{
+display:none;
+}
+
+#giftBox{
+font-size:110px;
+filter:drop-shadow(0 0 25px rgba(255,215,0,.85))
+drop-shadow(0 0 55px rgba(255,215,0,.5));
+animation:giftFloat 2.2s ease-in-out infinite,
+giftGlow 2.2s ease-in-out infinite;
+}
+
+@keyframes giftFloat{
+0%,100%{transform:translateY(0) rotate(-3deg);}
+50%{transform:translateY(-18px) rotate(3deg);}
+}
+
+@keyframes giftGlow{
+0%,100%{
+filter:drop-shadow(0 0 20px rgba(255,215,0,.7))
+drop-shadow(0 0 45px rgba(255,215,0,.4));
+}
+50%{
+filter:drop-shadow(0 0 35px rgba(255,215,0,1))
+drop-shadow(0 0 70px rgba(255,215,0,.7));
+}
+}
+
+#giftLabel{
+color:#ffd700;
+font-size:20px;
+letter-spacing:1px;
+text-shadow:0 0 12px rgba(255,215,0,.9);
+animation:labelPulse 1.6s ease-in-out infinite;
+}
+
+@keyframes labelPulse{
+0%,100%{opacity:.6;}
+50%{opacity:1;}
 }
 
 /* Typing Effect */
@@ -258,6 +323,14 @@ max-width:100% !important;
 line-height:1.5 !important;
 }
 
+#giftBox{
+font-size:70px;
+}
+
+#giftLabel{
+font-size:14px;
+}
+
 }
 
 </style>
@@ -265,7 +338,12 @@ line-height:1.5 !important;
 
 <body>
 
-<div class="container">
+<div id="giftBoxWrap" onclick="openGift()">
+<div id="giftBox">🎁</div>
+<div id="giftLabel">Tap to Open</div>
+</div>
+
+<div class="container" id="card">
 
 <h1>
 🎂 Happy Birthday
@@ -374,6 +452,11 @@ document.body.appendChild(s);
 
 </script>
 <script>
+
+function openGift(){
+document.getElementById("giftBoxWrap").classList.add("hide");
+document.getElementById("card").classList.add("show");
+}
 
 function celebrate(){
 
