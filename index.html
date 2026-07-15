@@ -226,7 +226,40 @@ to{width:100%}
 @keyframes blinkCursor{
 50%{border-color:transparent}
 }
-  
+
+/* Scale everything down on phones so it matches how it looks on a laptop, instead of looking zoomed in */
+@media (max-width:600px){
+
+h1{
+font-size:32px;
+}
+
+p{
+font-size:14px;
+margin-top:10px;
+}
+
+button{
+padding:8px 20px;
+font-size:13px;
+margin-top:18px;
+}
+
+.container{
+padding:20px;
+width:88%;
+border-radius:22px;
+}
+
+#letter{
+font-size:12px !important;
+margin-top:15px !important;
+max-width:100% !important;
+line-height:1.5 !important;
+}
+
+}
+
 </style>
 </head>
 
