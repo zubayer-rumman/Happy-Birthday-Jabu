@@ -184,9 +184,8 @@ opacity:1;
 transform:translateY(0);
 }
 
-}  
-</style>
-  
+}
+
 /* Glass Card */
 .container{
 background:rgba(255,255,255,.12);
@@ -204,7 +203,7 @@ border-right:3px solid white;
 width:0;
 margin:auto;
 animation:typing 5s steps(40,end) forwards,
-blink .8s infinite;
+blinkCursor .8s infinite;
 }
 
 @keyframes typing{
@@ -212,9 +211,10 @@ from{width:0}
 to{width:100%}
 }
 
-@keyframes blink{
+@keyframes blinkCursor{
 50%{border-color:transparent}
 }
+</style>
 </head>
 
 <body>
