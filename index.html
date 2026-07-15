@@ -1,144 +1,85 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Happy Birthday Jabu</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday Jabu 🎂</title>
 
 <style>
-.balloon{
-    position:absolute;
-    bottom:-100px;
-    animation:balloonUp 10s linear infinite;
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
 }
 
-@keyframes balloonUp{
-100%{
-transform:translateY(-120vh);
-}
-}
-
-/* Sparkles */
-.star{
-position:absolute;
-color:white;
-animation:starBlink 1.5s infinite;
-}
-
-@keyframes starBlink{
-0%,100%{
-opacity:.2;
-}
-50%{
-opacity:1;
-}
-}
-/* Confetti */
-.confetti{
-position:fixed;
-top:-20px;
-font-size:22px;
-pointer-events:none;
-animation:fall linear forwards;
-z-index:999;
-}
-
-@keyframes fall{
-0%{
-transform:translateY(-20px) rotate(0deg);
-opacity:1;
-}
-100%{
-transform:translateY(110vh) rotate(720deg);
-opacity:0;
-}
-}
-
-/* Firework */
-.firework{
-position:fixed;
-font-size:30px;
-animation:boom 1s ease-out forwards;
-pointer-events:none;
-z-index:1000;
-}
-
-@keyframes boom{
-0%{
-transform:scale(0.2);
-opacity:1;
-}
-100%{
-transform:scale(3);
-opacity:0;
-}
-}
-/* Glass Card */
-.container{
-display:none;
-text-align:center;
-background:rgba(255,255,255,.12);
-backdrop-filter:blur(12px);
-padding:40px;
-border-radius:25px;
-box-shadow:0 0 30px rgba(255,255,255,.3);
-    color:black;
-}
-
-@keyframes fadeIn{
-from{
-opacity:0;
-transform:scale(.8);
-}
-to{
-opacity:1;
-transform:scale(1);
-}
-}
-/* Typing Effect */
-
-
-@keyframes typing{
-from{width:0}
-to{width:100%}
-}
-.typing{
-display:inline-block;
+body{
+height:100vh;
 overflow:hidden;
-white-space:nowrap;
-border-right:3px solid white;
-width:0;
-margin:auto;
-animation:typing 5s steps(40,end) forwards,
-cursorBlink .8s infinite;
-}
-@keyframes cursorBlink{
-50%{
-border-color:transparent;
-}
-}  
-#giftBox{
-position:fixed;
-top:50%;
-left:50%;
-transform:translate(-50%,-50%);
-font-size:120px;
-cursor:pointer;
-z-index:9999;
-animation:bounce 1s infinite;
+display:flex;
+justify-content:center;
+align-items:center;
+background:linear-gradient(-45deg,#ff4b8b,#6c63ff,#00c9ff,#ffcc70);
+background-size:400% 400%;
+animation:bg 12s ease infinite;
+font-family:Arial,sans-serif;
 }
 
-@keyframes bounce{
-0%,100%{transform:translate(-50%,-50%) scale(1);}
-50%{transform:translate(-50%,-50%) scale(1.15);}
+@keyframes bg{
+0%{background-position:0% 50%;}
+50%{background-position:100% 50%;}
+100%{background-position:0% 50%;}
+}
+
+.container{
+text-align:center;
+z-index:10;
+}
+
+h1{
+font-size:60px;
+color:white;
+text-shadow:0 0 20px white;
+animation:glow 2s infinite alternate;
+}
+
+.jabu{
+color:#ff0000;
+text-shadow:0 0 20px red;
+}
+
+p{
+margin-top:20px;
+font-size:22px;
+color:white;
+}
+
+button{
+margin-top:35px;
+padding:15px 40px;
+font-size:22px;
+border:none;
+border-radius:50px;
+cursor:pointer;
+background:#ff0055;
+color:white;
+box-shadow:0 0 20px #ff0055;
+transition:.3s;
+}
+
+button:hover{
+transform:scale(1.1);
+}
+
+@keyframes glow{
+from{transform:scale(1);}
+to{transform:scale(1.08);}
 }
 </style>
 
 </head>
 
 <body>
-<div id="giftBox" onclick="openGift()">
-🎁
-</div>
+
 <div class="container">
 
 <h1>
@@ -147,163 +88,13 @@ animation:bounce 1s infinite;
 <span class="jabu">Jabu</span>
 </h1>
 
-<p class="typing">
-May Allah bless you with happiness, success and endless smiles ❤️
-</p>
+<p>Wishing you endless happiness, love & success ❤️</p>
 
-<button id="btn" onclick="celebrate()">
-🎁 Open Surprise
-</button>
-<br><br>
-
-<button onclick="playMusic()">
-🎵 Play Music
+<button onclick="alert('🎉 Surprise is coming in Step 2 🎉')">
+Click Here ❤️
 </button>
 
-<audio id="music" loop>
-    <source src="birthday.mp3" type="audio/mpeg">
-</audio>
 </div>
 
-<script>
-
-// ❤️ Hearts
-for(let i=0;i<35;i++){
-
-let h=document.createElement("div");
-.heart{
-    position:absolute;
-    bottom:-50px;
-    animation:heartUp 8s linear infinite;
-    pointer-events:none;
-}
-
-@keyframes heartUp{
-    100%{
-        transform:translateY(-120vh);
-        opacity:0;
-    }
-}
-h.className="heart";
-
-h.innerHTML="❤️";
-
-h.style.left=Math.random()*100+"vw";
-
-h.style.fontSize=(18+Math.random()*22)+"px";
-
-h.style.animationDuration=(5+Math.random()*4)+"s";
-
-h.style.animationDelay=Math.random()*5+"s";
-
-document.body.appendChild(h);
-
-}
-
-// 🎈 Balloons
-for(let i=0;i<15;i++){
-
-let b=document.createElement("div");
-
-b.className="balloon";
-
-b.innerHTML="🎈";
-
-b.style.left=Math.random()*100+"vw";
-
-b.style.fontSize=(35+Math.random()*20)+"px";
-
-b.style.animationDuration=(8+Math.random()*5)+"s";
-
-b.style.animationDelay=Math.random()*6+"s";
-
-document.body.appendChild(b);
-
-}
-
-// ✨ Stars
-for(let i=0;i<60;i++){
-
-let s=document.createElement("div");
-
-s.className="star";
-
-s.innerHTML="✨";
-
-s.style.left=Math.random()*100+"vw";
-
-s.style.top=Math.random()*100+"vh";
-
-s.style.fontSize=(8+Math.random()*10)+"px";
-
-s.style.animationDelay=Math.random()*2+"s";
-
-document.body.appendChild(s);
-
-}
-
-</script>
-<script>
-
-function openGift(){
-    document.getElementById("giftBox").style.display = "none";
-    
-    const container = document.querySelector(".container");
-    container.style.display = "block";
-    container.style.animation = "fadeIn 1s ease";
-
-    document.getElementById("music").play().catch(()=>{});
-}
-
-function celebrate(){
-
-    // Confetti
-    for(let i=0;i<180;i++){
-
-        let c=document.createElement("div");
-
-        c.className="confetti";
-
-        const icons=["🎉","🎊","✨","❤️","🎈","🎂"];
-
-        c.innerHTML=icons[Math.floor(Math.random()*icons.length)];
-
-        c.style.left=Math.random()*100+"vw";
-
-        c.style.animationDuration=(2+Math.random()*3)+"s";
-
-        document.body.appendChild(c);
-
-        setTimeout(()=>c.remove(),5000);
-    }
-
-    // Fireworks
-    for(let i=0;i<35;i++){
-
-        let f=document.createElement("div");
-
-        f.className="firework";
-
-        f.innerHTML="✨";
-
-        f.style.left=Math.random()*100+"vw";
-
-        f.style.top=Math.random()*100+"vh";
-
-        document.body.appendChild(f);
-
-        setTimeout(()=>f.remove(),1000);
-    }
-
-    setTimeout(()=>{
-        alert("🎂 Happy Birthday Jabu ❤️\n\nMay your life be filled with happiness, love and success! 🎉");
-    },300);
-}
-
-function playMusic() {
-    document.getElementById("music").play();
-} 
-
-</script>
 </body>
 </html>
