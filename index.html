@@ -137,6 +137,43 @@ animation:blink 1.5s infinite;
 will-change:opacity;
 }
 
+/* Flower Petals - gently blowing across the screen like flowers
+   caught in a light breeze (soft sway + tumble, not a straight fall) */
+.petal{
+position:absolute;
+top:-40px;
+border-radius:0 100% 0 100%;
+background:linear-gradient(135deg,#fff4f8,#ffc2dd 55%,#ff8fbb);
+box-shadow:0 0 6px rgba(255,143,187,.5),inset 0 0 4px rgba(255,255,255,.6);
+opacity:0;
+animation:petalBlow linear infinite;
+will-change:transform,opacity;
+}
+
+@keyframes petalBlow{
+0%{
+transform:translate(0,-10vh) rotate(0deg) rotateY(0deg);
+opacity:0;
+}
+8%{
+opacity:.95;
+}
+30%{
+transform:translate(var(--sway1,40px),25vh) rotate(110deg) rotateY(180deg);
+}
+55%{
+transform:translate(var(--sway2,-25px),55vh) rotate(210deg) rotateY(0deg);
+}
+80%{
+transform:translate(var(--sway1,40px),85vh) rotate(300deg) rotateY(180deg);
+opacity:.85;
+}
+100%{
+transform:translate(var(--sway2,-25px),115vh) rotate(400deg) rotateY(0deg);
+opacity:0;
+}
+}
+
 @keyframes blink{
 0%,100%{
 opacity:.2;
@@ -1086,7 +1123,7 @@ always be filled with smiles and love.
 <script>
 
 /* ---------------------------------------------------------------
-   Ambient floating particles (hearts / balloons / stars)
+   Ambient floating particles (hearts / balloons / stars / petals)
    Built once as a DocumentFragment and inserted in a single batch
    on the next animation frame, instead of hundreds of individual
    appendChild calls during initial parsing. This is what was
@@ -1128,6 +1165,24 @@ s.style.top=Math.random()*100+"vh";
 s.style.fontSize=(8+Math.random()*10)+"px";
 s.style.animationDelay=Math.random()*2+"s";
 frag.appendChild(s);
+}
+
+// 🌸 Flower petals blowing gently across the screen
+for(let i=0;i<22;i++){
+const p=document.createElement("div");
+p.className="petal";
+const size=10+Math.random()*9;
+p.style.width=size+"px";
+p.style.height=size+"px";
+p.style.left=Math.random()*100+"vw";
+const sway1=(30+Math.random()*45)*(Math.random()<0.5?1:-1);
+const sway2=(20+Math.random()*35)*(Math.random()<0.5?1:-1);
+p.style.setProperty("--sway1",sway1+"px");
+p.style.setProperty("--sway2",sway2+"px");
+p.style.filter="hue-rotate("+Math.floor(Math.random()*70-25)+"deg)";
+p.style.animationDuration=(9+Math.random()*7)+"s";
+p.style.animationDelay=Math.random()*9+"s";
+frag.appendChild(p);
 }
 
 fxLayer.appendChild(frag);
