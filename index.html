@@ -11,6 +11,11 @@
 margin:0;
 padding:0;
 box-sizing:border-box;
+-webkit-tap-highlight-color:transparent;
+}
+
+html,body{
+touch-action:manipulation;
 }
 
 body{
@@ -23,6 +28,18 @@ background:linear-gradient(-45deg,#ff4b8b,#7c5cff,#00c9ff,#ffd86f);
 background-size:400% 400%;
 animation:bg 10s ease infinite;
 font-family:Arial,sans-serif;
+}
+
+/* Dedicated compositing layer for floating ambience - keeps particle
+   animations off the main thread as much as possible so they never
+   block/stutter taps on the UI above them. */
+#fx-layer{
+position:fixed;
+inset:0;
+z-index:1;
+pointer-events:none;
+overflow:hidden;
+contain:layout style paint;
 }
 
 @keyframes bg{
@@ -80,6 +97,7 @@ position:absolute;
 bottom:-50px;
 font-size:25px;
 animation:heartUp linear infinite;
+will-change:transform,opacity;
 }
 
 @keyframes heartUp{
@@ -102,6 +120,7 @@ position:absolute;
 bottom:-100px;
 font-size:45px;
 animation:balloonUp linear infinite;
+will-change:transform;
 }
 
 @keyframes balloonUp{
@@ -115,6 +134,7 @@ transform:translateY(-120vh);
 position:absolute;
 color:white;
 animation:blink 1.5s infinite;
+will-change:opacity;
 }
 
 @keyframes blink{
@@ -133,6 +153,7 @@ font-size:22px;
 pointer-events:none;
 animation:fall linear forwards;
 z-index:999;
+will-change:transform,opacity;
 }
 
 @keyframes fall{
@@ -153,6 +174,7 @@ font-size:30px;
 animation:boom 1s ease-out forwards;
 pointer-events:none;
 z-index:1000;
+will-change:transform,opacity;
 }
 
 @keyframes boom{
@@ -315,9 +337,9 @@ padding:20px;
 display:flex;
 flex-direction:column;
 align-items:center;
-background:rgba(255,255,255,.05);
-backdrop-filter:blur(18px);
--webkit-backdrop-filter:blur(18px);
+background:rgba(30,20,45,.55);
+backdrop-filter:blur(10px);
+-webkit-backdrop-filter:blur(10px);
 border:1px solid rgba(255,215,0,.25);
 border-radius:32px;
 padding:42px 34px 36px;
@@ -421,22 +443,19 @@ font-size:24px;
 font-weight:500;
 cursor:pointer;
 user-select:none;
-transition:.15s;
+touch-action:manipulation;
+will-change:transform;
+transition:transform .08s ease,border-color .12s ease,background-color .12s ease;
 }
 
 .lock-key:hover{
 border-color:rgba(255,215,0,.5);
-box-shadow:
-0 4px 14px rgba(0,0,0,.4),
-0 0 18px rgba(255,215,0,.25),
-inset 0 1px 0 rgba(255,255,255,.2);
 }
 
 .lock-key:active{
-background:linear-gradient(160deg,rgba(255,215,0,.35),rgba(255,180,0,.15));
+background:rgba(255,215,0,.3);
 border-color:rgba(255,215,0,.7);
-transform:scale(.94);
-box-shadow:0 0 20px rgba(255,215,0,.5);
+transform:scale(.92);
 }
 
 .lock-key.empty{
@@ -737,10 +756,12 @@ position:relative;
 width:100%;
 max-width:520px;
 max-height:85vh;
-overflow-y:auto;
+display:flex;
+flex-direction:column;
+overflow:visible;
 background:linear-gradient(160deg,#fff8ec,#fbeecb);
 color:#3a2a1a;
-padding:45px 35px 35px;
+padding:45px 35px 30px;
 border-radius:18px;
 box-shadow:
 0 0 0 1px rgba(255,215,0,.4),
@@ -749,6 +770,14 @@ box-shadow:
 transform-origin:top center;
 animation:letterOpen .6s cubic-bezier(.2,.8,.2,1) forwards;
 text-align:left;
+}
+
+/* Only this inner area scrolls, so the seal above the card and the
+   Close button below it always stay fully visible and uncropped. */
+.letter-scroll{
+overflow-y:auto;
+min-height:0;
+flex:1;
 }
 
 @keyframes letterOpen{
@@ -941,6 +970,8 @@ margin-top:22px;
 
 <body>
 
+<div id="fx-layer"></div>
+
 <div id="giftBoxWrap" onclick="openGift()">
 <div id="giftBox">🎁</div>
 <div id="giftLabel">Tap to Open</div>
@@ -988,72 +1019,6 @@ always be filled with smiles and love.
 ❤️ Best Wishes ❤️
 
 </div>
-<script>
-
-// ❤️ Hearts
-for(let i=0;i<35;i++){
-
-let h=document.createElement("div");
-
-h.className="heart";
-
-h.innerHTML="❤️";
-
-h.style.left=Math.random()*100+"vw";
-
-h.style.fontSize=(18+Math.random()*22)+"px";
-
-h.style.animationDuration=(5+Math.random()*4)+"s";
-
-h.style.animationDelay=Math.random()*5+"s";
-
-document.body.appendChild(h);
-
-}
-
-// 🎈 Balloons
-for(let i=0;i<15;i++){
-
-let b=document.createElement("div");
-
-b.className="balloon";
-
-b.innerHTML="🎈";
-
-b.style.left=Math.random()*100+"vw";
-
-b.style.fontSize=(35+Math.random()*20)+"px";
-
-b.style.animationDuration=(8+Math.random()*5)+"s";
-
-b.style.animationDelay=Math.random()*6+"s";
-
-document.body.appendChild(b);
-
-}
-
-// ✨ Stars
-for(let i=0;i<60;i++){
-
-let s=document.createElement("div");
-
-s.className="star";
-
-s.innerHTML="✨";
-
-s.style.left=Math.random()*100+"vw";
-
-s.style.top=Math.random()*100+"vh";
-
-s.style.fontSize=(8+Math.random()*10)+"px";
-
-s.style.animationDelay=Math.random()*2+"s";
-
-document.body.appendChild(s);
-
-}
-
-</script>
 </div>
 
 <div id="lockScreen">
@@ -1106,17 +1071,75 @@ document.body.appendChild(s);
 <div class="letter-card">
 <div class="letter-seal">💌</div>
 <div class="letter-title">Happy Birthday, Mi Amor. ❤️</div>
+<div class="letter-scroll">
 <div class="letter-body">
 <p>Tumi amar life-er one of the best parts. Thank you for giving me so much love, happiness, and beautiful memories.</p>
 <p>Ami shudhu chai Allah tomake shobshomoy happy, healthy, ar successful rakhuk. Ami jani na Allah amader vagge ki likhe rekhechen, but deep inside I still believe we belong together.</p>
 <p>No matter what happens, you'll always have a special place in my heart.</p>
 <p class="letter-signature">Love you. Always. ❤️</p>
 </div>
+</div>
 <button class="letter-close" onclick="closeLetter()">Close</button>
 </div>
 </div>
 
 <script>
+
+/* ---------------------------------------------------------------
+   Ambient floating particles (hearts / balloons / stars)
+   Built once as a DocumentFragment and inserted in a single batch
+   on the next animation frame, instead of hundreds of individual
+   appendChild calls during initial parsing. This is what was
+   causing the balloons/hearts to appear "frozen" for a couple of
+   seconds before they started moving on slower phones.
+--------------------------------------------------------------- */
+function spawnAmbientFX(){
+const fxLayer=document.getElementById("fx-layer");
+const frag=document.createDocumentFragment();
+
+for(let i=0;i<35;i++){
+const h=document.createElement("div");
+h.className="heart";
+h.textContent="❤️";
+h.style.left=Math.random()*100+"vw";
+h.style.fontSize=(18+Math.random()*22)+"px";
+h.style.animationDuration=(5+Math.random()*4)+"s";
+h.style.animationDelay=Math.random()*5+"s";
+frag.appendChild(h);
+}
+
+for(let i=0;i<15;i++){
+const b=document.createElement("div");
+b.className="balloon";
+b.textContent="🎈";
+b.style.left=Math.random()*100+"vw";
+b.style.fontSize=(35+Math.random()*20)+"px";
+b.style.animationDuration=(8+Math.random()*5)+"s";
+b.style.animationDelay=Math.random()*6+"s";
+frag.appendChild(b);
+}
+
+for(let i=0;i<60;i++){
+const s=document.createElement("div");
+s.className="star";
+s.textContent="✨";
+s.style.left=Math.random()*100+"vw";
+s.style.top=Math.random()*100+"vh";
+s.style.fontSize=(8+Math.random()*10)+"px";
+s.style.animationDelay=Math.random()*2+"s";
+frag.appendChild(s);
+}
+
+fxLayer.appendChild(frag);
+}
+
+// Defer to the next frame so the very first screen (gift box) paints
+// immediately, then the particles pop in smoothly right after.
+if(document.readyState==="loading"){
+document.addEventListener("DOMContentLoaded",()=>requestAnimationFrame(spawnAmbientFX));
+}else{
+requestAnimationFrame(spawnAmbientFX);
+}
 
 function openGift(){
 document.getElementById("giftBoxWrap").classList.add("hide");
@@ -1201,51 +1224,38 @@ function continueFromCake(){
 const cakeScreen=document.getElementById("cakeScreen");
 cakeScreen.style.display="none";
 document.querySelectorAll(".cake-spark").forEach(el=>el.remove());
-document.getElementById("card").style.visibility="visible";
+// Note: the main card stays hidden here on purpose - it should only
+// reveal itself once the person closes the letter, not flash in the
+// background while the letter is opening.
 celebrate();
 }
 
 function celebrate(){
 
-// Confetti
+const frag=document.createDocumentFragment();
+const confettiIcons=["🎉","🎊","✨","❤️","🎈","🎂"];
+
 for(let i=0;i<180;i++){
-
-let c=document.createElement("div");
-
+const c=document.createElement("div");
 c.className="confetti";
-
-const icons=["🎉","🎊","✨","❤️","🎈","🎂"];
-
-c.innerHTML=icons[Math.floor(Math.random()*icons.length)];
-
+c.textContent=confettiIcons[Math.floor(Math.random()*confettiIcons.length)];
 c.style.left=Math.random()*100+"vw";
-
 c.style.animationDuration=(2+Math.random()*3)+"s";
-
-document.body.appendChild(c);
-
+frag.appendChild(c);
 setTimeout(()=>c.remove(),5000);
-
 }
 
-// Fireworks
 for(let i=0;i<35;i++){
-
-let f=document.createElement("div");
-
+const f=document.createElement("div");
 f.className="firework";
-
-f.innerHTML="✨";
-
+f.textContent="✨";
 f.style.left=Math.random()*100+"vw";
-
 f.style.top=Math.random()*100+"vh";
-
-document.body.appendChild(f);
-
+frag.appendChild(f);
 setTimeout(()=>f.remove(),1000);
-
 }
+
+document.body.appendChild(frag);
 
 setTimeout(()=>{
 document.getElementById("letterModal").classList.add("open");
@@ -1255,6 +1265,8 @@ document.getElementById("letterModal").classList.add("open");
 
 function closeLetter(){
 document.getElementById("letterModal").classList.remove("open");
+// The main birthday card only appears now, after the letter is closed.
+document.getElementById("card").style.visibility="visible";
 }
 
 </script>  
