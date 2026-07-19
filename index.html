@@ -459,7 +459,13 @@ align-items:center;
 justify-content:center;
 flex-direction:column;
 overflow:hidden;
-background:radial-gradient(circle at center,#3a1766,#0f0c29 75%);
+background:radial-gradient(circle at center,
+rgba(30,15,55,.55) 0%,
+rgba(15,12,41,.4) 40%,
+rgba(15,12,41,.15) 65%,
+rgba(15,12,41,0) 85%);
+backdrop-filter:blur(2px) saturate(1.1);
+-webkit-backdrop-filter:blur(2px) saturate(1.1);
 }
 
 .cake-rays{
