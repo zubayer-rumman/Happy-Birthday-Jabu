@@ -42,6 +42,68 @@ overflow:hidden;
 contain:layout style paint;
 }
 
+/* Cinematic opening intro */
+#introScreen{
+position:fixed;
+inset:0;
+z-index:5000;
+background:#000;
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+overflow:hidden;
+transition:opacity .7s ease;
+cursor:pointer;
+}
+
+#introScreen.fade-out{
+opacity:0;
+pointer-events:none;
+}
+
+.intro-star{
+position:absolute;
+color:#fff;
+animation:blink 1.8s infinite;
+}
+
+#introText{
+position:relative;
+color:#ffe9a8;
+font-size:20px;
+letter-spacing:1px;
+text-align:center;
+padding:0 30px;
+opacity:0;
+text-shadow:0 0 16px rgba(255,215,0,.6);
+transition:opacity 1s ease;
+}
+
+#introText.show{
+opacity:1;
+}
+
+#introCountdown{
+position:relative;
+margin-top:26px;
+font-size:54px;
+font-weight:700;
+color:#ffd700;
+text-shadow:0 0 24px rgba(255,215,0,.8);
+min-height:64px;
+}
+
+#introCountdown.pop{
+animation:countdownPop .8s ease;
+}
+
+@keyframes countdownPop{
+0%{transform:scale(.4);opacity:0;}
+30%{transform:scale(1.15);opacity:1;}
+100%{transform:scale(1);opacity:.85;}
+}
+
 @keyframes bg{
 0%{background-position:0% 50%;}
 50%{background-position:100% 50%;}
@@ -764,6 +826,55 @@ animation:sparkRise linear infinite;
 100%{transform:translateY(-100vh) scale(1.1);opacity:0;}
 }
 
+/* Sky lantern final ending */
+#finalScreen{
+display:none;
+position:fixed;
+inset:0;
+z-index:3500;
+align-items:center;
+justify-content:center;
+overflow:hidden;
+background:radial-gradient(circle at center,rgba(30,15,50,.7),rgba(8,5,18,.9));
+backdrop-filter:blur(3px);
+-webkit-backdrop-filter:blur(3px);
+opacity:1;
+transition:opacity .9s ease;
+}
+
+#finalScreen.fade-out{
+opacity:0;
+}
+
+.final-message{
+position:relative;
+z-index:2;
+color:#ffe9a8;
+font-size:24px;
+font-weight:700;
+text-align:center;
+max-width:80%;
+line-height:1.5;
+text-shadow:0 0 20px rgba(255,215,0,.6);
+opacity:0;
+animation:pieceFadeUp 1s ease forwards;
+animation-delay:.3s;
+}
+
+.lantern{
+position:absolute;
+bottom:-60px;
+pointer-events:none;
+filter:drop-shadow(0 0 10px rgba(255,150,50,.7));
+animation:lanternRise linear forwards;
+}
+
+@keyframes lanternRise{
+0%{transform:translateY(0) translateX(0);opacity:0;}
+10%{opacity:1;}
+100%{transform:translateY(-115vh) translateX(20px);opacity:0;}
+}
+
 
 #letterModal{
 display:none;
@@ -880,6 +991,18 @@ transform:scale(1.06);
 
 
 @media (max-width:600px){
+
+#introText{
+font-size:16px;
+}
+
+#introCountdown{
+font-size:42px;
+}
+
+.final-message{
+font-size:18px;
+}
 
 h1{
 font-size:32px;
@@ -1007,6 +1130,11 @@ margin-top:22px;
 
 <body>
 
+<div id="introScreen">
+<div id="introText">✨ A Special Surprise is Waiting... ✨</div>
+<div id="introCountdown"></div>
+</div>
+
 <div id="fx-layer"></div>
 
 <div id="giftBoxWrap" onclick="openGift()">
@@ -1120,6 +1248,10 @@ always be filled with smiles and love.
 </div>
 </div>
 
+<div id="finalScreen">
+<div class="final-message">❤️ Thank You For Being A<br>Beautiful Part Of My Life ❤️</div>
+</div>
+
 <script>
 
 /* ---------------------------------------------------------------
@@ -1194,6 +1326,64 @@ if(document.readyState==="loading"){
 document.addEventListener("DOMContentLoaded",()=>requestAnimationFrame(spawnAmbientFX));
 }else{
 requestAnimationFrame(spawnAmbientFX);
+}
+
+/* ---------------------------------------------------------------
+   Cinematic opening: black screen, twinkling stars, a fading-in
+   line of text, then a 3-2-1 countdown before the gift box reveal.
+   Tapping anywhere on the intro skips straight to the end. This
+   sits on top of (and briefly hides) the background ambience -
+   it doesn't remove or replace it, just plays in front of it.
+--------------------------------------------------------------- */
+function runIntro(){
+const intro=document.getElementById("introScreen");
+const txt=document.getElementById("introText");
+const cd=document.getElementById("introCountdown");
+if(!intro) return;
+
+const frag=document.createDocumentFragment();
+for(let i=0;i<40;i++){
+const s=document.createElement("div");
+s.className="intro-star";
+s.textContent="✨";
+s.style.left=Math.random()*100+"vw";
+s.style.top=Math.random()*100+"vh";
+s.style.fontSize=(6+Math.random()*10)+"px";
+s.style.animationDelay=Math.random()*2+"s";
+frag.appendChild(s);
+}
+intro.appendChild(frag);
+
+function finishIntro(){
+if(intro.classList.contains("fade-out")) return;
+intro.classList.add("fade-out");
+setTimeout(()=>{intro.style.display="none";},700);
+}
+intro.addEventListener("click",finishIntro);
+
+setTimeout(()=>{txt.classList.add("show");},300);
+
+let n=3;
+function tick(){
+if(intro.classList.contains("fade-out")) return;
+if(n>0){
+cd.textContent=n;
+cd.classList.remove("pop");
+void cd.offsetWidth;
+cd.classList.add("pop");
+n--;
+setTimeout(tick,800);
+}else{
+finishIntro();
+}
+}
+setTimeout(tick,1300);
+}
+
+if(document.readyState==="loading"){
+document.addEventListener("DOMContentLoaded",runIntro);
+}else{
+runIntro();
 }
 
 function openGift(){
@@ -1322,6 +1512,38 @@ function closeLetter(){
 document.getElementById("letterModal").classList.remove("open");
 // The main birthday card only appears now, after the letter is closed.
 document.getElementById("card").style.visibility="visible";
+showFinalEnding();
+}
+
+function spawnLanterns(){
+const final=document.getElementById("finalScreen");
+const frag=document.createDocumentFragment();
+for(let i=0;i<18;i++){
+const l=document.createElement("div");
+l.className="lantern";
+l.textContent="🏮";
+l.style.left=Math.random()*100+"vw";
+l.style.fontSize=(22+Math.random()*18)+"px";
+l.style.animationDuration=(5+Math.random()*3)+"s";
+l.style.animationDelay=Math.random()*2+"s";
+frag.appendChild(l);
+}
+final.appendChild(frag);
+}
+
+function showFinalEnding(){
+const final=document.getElementById("finalScreen");
+if(!final) return;
+final.style.display="flex";
+spawnLanterns();
+setTimeout(()=>{
+final.classList.add("fade-out");
+setTimeout(()=>{
+final.style.display="none";
+final.classList.remove("fade-out");
+document.querySelectorAll(".lantern").forEach(l=>l.remove());
+},900);
+},4200);
 }
 
 </script>  
