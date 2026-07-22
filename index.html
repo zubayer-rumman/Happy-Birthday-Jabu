@@ -306,6 +306,174 @@ transform:translateY(0);
 
 }
 
+/* Time Lock Screen - shown until the unlock date/time arrives */
+#timeLockScreen{
+position:fixed;
+inset:0;
+z-index:99999;
+display:none;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+text-align:center;
+padding:30px;
+background:linear-gradient(-45deg,#ff4b8b,#7c5cff,#00c9ff,#ffd86f);
+background-size:400% 400%;
+animation:bg 10s ease infinite;
+color:#fff;
+overflow:hidden;
+}
+
+#timeLockScreen .lock-fx-layer{
+position:absolute;
+inset:0;
+z-index:1;
+pointer-events:none;
+overflow:hidden;
+}
+
+#timeLockScreen .lock-fx-layer .star{
+position:absolute;
+}
+
+#timeLockScreen .lock-card{
+position:relative;
+z-index:2;
+background:rgba(255,255,255,0.10);
+backdrop-filter:blur(18px);
+-webkit-backdrop-filter:blur(18px);
+border:1px solid rgba(255,255,255,0.25);
+border-radius:32px;
+padding:50px 36px;
+max-width:440px;
+width:100%;
+box-shadow:
+0 0 40px rgba(255,255,255,0.15),
+0 0 90px rgba(255,255,255,0.08);
+animation:lockCardIn 1s cubic-bezier(.2,.8,.2,1) both;
+}
+
+@keyframes lockCardIn{
+from{opacity:0;transform:translateY(24px) scale(.94);}
+to{opacity:1;transform:translateY(0) scale(1);}
+}
+
+#timeLockScreen .lock-ring{
+position:relative;
+width:96px;
+height:96px;
+margin:0 auto 22px;
+display:flex;
+align-items:center;
+justify-content:center;
+}
+
+#timeLockScreen .lock-ring::before,
+#timeLockScreen .lock-ring::after{
+content:"";
+position:absolute;
+inset:0;
+border-radius:50%;
+border:2px solid rgba(255,215,0,.55);
+animation:lockPulse 2.6s ease-out infinite;
+}
+
+#timeLockScreen .lock-ring::after{
+animation-delay:1.3s;
+}
+
+@keyframes lockPulse{
+0%{transform:scale(.7);opacity:.9;}
+100%{transform:scale(1.6);opacity:0;}
+}
+
+#timeLockScreen .lock-emoji{
+position:relative;
+z-index:2;
+font-size:46px;
+filter:drop-shadow(0 0 18px rgba(255,215,0,.75));
+animation:lockFloat 3s ease-in-out infinite;
+}
+
+@keyframes lockFloat{
+0%,100%{transform:translateY(0) rotate(0deg);}
+50%{transform:translateY(-6px) rotate(-4deg);}
+}
+
+#timeLockScreen h2{
+font-size:24px;
+margin-bottom:14px;
+background:linear-gradient(90deg,#fff8dd,#ffd700,#fff8dd,#ffd700);
+background-size:300% auto;
+-webkit-background-clip:text;
+background-clip:text;
+color:transparent;
+animation:shimmer 4s linear infinite;
+}
+
+@keyframes shimmer{
+0%{background-position:0% 50%;}
+100%{background-position:300% 50%;}
+}
+
+#timeLockScreen p{
+font-size:15.5px;
+opacity:.92;
+margin-top:0;
+line-height:1.5;
+}
+
+#timeLockScreen .lock-divider{
+width:60px;
+height:2px;
+margin:22px auto;
+background:linear-gradient(90deg,transparent,rgba(255,215,0,.8),transparent);
+}
+
+#timeLockCountdown{
+display:flex;
+gap:12px;
+justify-content:center;
+flex-wrap:wrap;
+}
+
+#timeLockCountdown .lock-unit{
+display:flex;
+flex-direction:column;
+align-items:center;
+min-width:54px;
+background:rgba(255,255,255,.10);
+border:1px solid rgba(255,255,255,.2);
+border-radius:14px;
+padding:10px 6px;
+box-shadow:0 0 18px rgba(255,215,0,.12);
+}
+
+#timeLockCountdown .lock-val{
+font-size:24px;
+font-weight:700;
+color:#ffd700;
+text-shadow:0 0 14px rgba(255,215,0,.7);
+transition:transform .25s ease;
+}
+
+#timeLockCountdown .lock-val.tick{
+animation:tickPop .4s ease;
+}
+
+@keyframes tickPop{
+0%{transform:scale(1.3);opacity:.4;}
+100%{transform:scale(1);opacity:1;}
+}
+
+#timeLockCountdown .lock-label{
+font-size:10.5px;
+letter-spacing:1px;
+text-transform:uppercase;
+opacity:.75;
+margin-top:4px;
+}
+
 /* Glass Card */
 .container{
 display:none;
@@ -1130,6 +1298,17 @@ margin-top:22px;
 
 <body>
 
+<div id="timeLockScreen">
+<div class="lock-fx-layer" id="lockFxLayer"></div>
+<div class="lock-card">
+<div class="lock-ring"><div class="lock-emoji">🔒</div></div>
+<h2>A Little Magic Is Waiting... ✨</h2>
+<p>Every second brings you closer to something made just for you.</p>
+<div class="lock-divider"></div>
+<div id="timeLockCountdown"></div>
+</div>
+</div>
+
 <div id="introScreen">
 <div id="introText">✨ A Special Surprise is Waiting... ✨</div>
 <div id="introCountdown"></div>
@@ -1255,6 +1434,92 @@ always be filled with smiles and love.
 <script>
 
 /* ---------------------------------------------------------------
+   TIME LOCK: page stays locked until this exact date/time.
+   Change the date below if you ever need a different unlock time.
+--------------------------------------------------------------- */
+const UNLOCK_TIME = new Date("2026-07-23T00:00:00").getTime();
+const isTimeLocked = Date.now() < UNLOCK_TIME;
+
+if(isTimeLocked){
+  document.getElementById("timeLockScreen").style.display = "flex";
+  document.body.style.overflow = "hidden";
+
+  function spawnLockSparkles(){
+    const layer = document.getElementById("lockFxLayer");
+    if(!layer) return;
+    const frag = document.createDocumentFragment();
+    for(let i=0;i<45;i++){
+      const s = document.createElement("div");
+      s.className = "star";
+      s.textContent = "✨";
+      s.style.left = Math.random()*100+"vw";
+      s.style.top = Math.random()*100+"vh";
+      s.style.fontSize = (8+Math.random()*10)+"px";
+      s.style.animation = "blink " + (1.2+Math.random()*1.8) + "s infinite";
+      s.style.animationDelay = Math.random()*2+"s";
+      frag.appendChild(s);
+    }
+    layer.appendChild(frag);
+  }
+  spawnLockSparkles();
+
+  const lockUnits = {
+    d: {el:null, prev:null, label:"Days"},
+    h: {el:null, prev:null, label:"Hours"},
+    m: {el:null, prev:null, label:"Minutes"},
+    s: {el:null, prev:null, label:"Seconds"}
+  };
+
+  function buildLockCountdownSkeleton(){
+    const cdEl = document.getElementById("timeLockCountdown");
+    if(!cdEl) return;
+    cdEl.innerHTML = "";
+    Object.keys(lockUnits).forEach(key=>{
+      const unit = document.createElement("div");
+      unit.className = "lock-unit";
+      const val = document.createElement("div");
+      val.className = "lock-val";
+      val.textContent = "0";
+      const label = document.createElement("div");
+      label.className = "lock-label";
+      label.textContent = lockUnits[key].label;
+      unit.appendChild(val);
+      unit.appendChild(label);
+      cdEl.appendChild(unit);
+      lockUnits[key].el = val;
+    });
+  }
+  buildLockCountdownSkeleton();
+
+  function updateLockCountdown(){
+    const remain = UNLOCK_TIME - Date.now();
+    if(remain <= 0){
+      location.reload();
+      return;
+    }
+    const values = {
+      d: Math.floor(remain / 86400000),
+      h: Math.floor((remain % 86400000) / 3600000),
+      m: Math.floor((remain % 3600000) / 60000),
+      s: Math.floor((remain % 60000) / 1000)
+    };
+    Object.keys(values).forEach(key=>{
+      const unit = lockUnits[key];
+      if(!unit.el) return;
+      if(unit.prev !== values[key]){
+        unit.el.textContent = values[key];
+        unit.el.classList.remove("tick");
+        void unit.el.offsetWidth;
+        unit.el.classList.add("tick");
+        unit.prev = values[key];
+      }
+    });
+  }
+  updateLockCountdown();
+  setInterval(updateLockCountdown, 1000);
+}
+
+/* ---------------------------------------------------------------
    Ambient floating particles (hearts / balloons / stars / petals)
    Built once as a DocumentFragment and inserted in a single batch
    on the next animation frame, instead of hundreds of individual
@@ -1322,10 +1587,12 @@ fxLayer.appendChild(frag);
 
 // Defer to the next frame so the very first screen (gift box) paints
 // immediately, then the particles pop in smoothly right after.
+if(!isTimeLocked){
 if(document.readyState==="loading"){
 document.addEventListener("DOMContentLoaded",()=>requestAnimationFrame(spawnAmbientFX));
 }else{
 requestAnimationFrame(spawnAmbientFX);
+}
 }
 
 /* ---------------------------------------------------------------
@@ -1380,10 +1647,12 @@ finishIntro();
 setTimeout(tick,1300);
 }
 
+if(!isTimeLocked){
 if(document.readyState==="loading"){
 document.addEventListener("DOMContentLoaded",runIntro);
 }else{
 runIntro();
+}
 }
 
 function openGift(){
